@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 import "./App.css";
 const App = () => {
+
+  //state variables
   const [sudoku, setSudoku] = useState([
     [0, 0, 0, 2, 4, 5, 6, 0, 7],
     [0, 0, 0, 0, 0, 0, 0, 2, 0],
@@ -12,6 +14,8 @@ const App = () => {
     [0, 8, 0, 0, 0, 0, 0, 0, 0],
     [7, 0, 2, 1, 8, 4, 0, 0, 0]
   ]);
+
+  const[speed, setSpeed] = useState(10);
 
   let table = [
     [0, 0, 0, 2, 4, 5, 6, 0, 7],
@@ -147,7 +151,11 @@ const App = () => {
       if (currentTable === pastTables.length) {
         clearInterval(id);
       }
-    }, 50);
+    }, speed);
+  };
+
+  const onSpeedChange = (evt) => {
+    setSpeed(evt.target.value);
   };
 
   return (
@@ -168,9 +176,12 @@ const App = () => {
           to use this app.
         </div>
       </main>
-      <div style={{ textAlign: "center" }}>
+      <div style={{ textAlign: "center"}}>
         <button onClick={onSolve}>Visualize!</button>
         <button onClick={reset}>Reset!</button>
+        <label htmlFor="speed">Speed: {speed}ms </label>
+        <input id="speed" value={speed} onInput={onSpeedChange} style={{verticalAlign: 'middle'}} type="range" min="10" max="1000"/>
+        
       </div>
     </div>
   );
