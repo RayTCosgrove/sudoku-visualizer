@@ -16,6 +16,7 @@ const App = () => {
   ]);
 
   const[speed, setSpeed] = useState(10);
+  const[id, setId] = useState(0);
 
   let table = [
     [0, 0, 0, 2, 4, 5, 6, 0, 7],
@@ -96,7 +97,6 @@ const App = () => {
   };
 
   const solveSudoku = () => {
-    console.log("it ran");
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         if (table[row][col] === 0) {
@@ -114,7 +114,6 @@ const App = () => {
                 [...table[7]],
                 [...table[8]]
               ]);
-              console.log(pastTables.length);
               if (solveSudoku()) {
                 return true;
               } else {
@@ -130,7 +129,6 @@ const App = () => {
                   [...table[7]],
                   [...table[8]]
                 ]);
-                console.log(pastTables.length);
               }
             }
           }
@@ -142,21 +140,29 @@ const App = () => {
   };
 
   const onSolve = () => {
+    if(!id){
     solveSudoku();
-
-    let id = setInterval(() => {
-      console.log("half second");
+     setId( setInterval(() => {
       setSudoku(pastTables[currentTable]);
       currentTable += 1;
       if (currentTable === pastTables.length) {
         clearInterval(id);
       }
-    }, speed);
+    }, speed));
+  }
   };
 
   const onSpeedChange = (evt) => {
     setSpeed(evt.target.value);
   };
+
+  const onStop = () => {
+    if(id){
+    clearInterval(id);
+    reset();
+    setId(0);
+    }
+  }
 
   return (
     <div>
@@ -178,6 +184,7 @@ const App = () => {
       </main>
       <div style={{ textAlign: "center"}}>
         <button onClick={onSolve}>Visualize!</button>
+        <button onClick={onStop}>Stop!</button>
         <button onClick={reset}>Reset!</button>
         <label htmlFor="speed">Speed: {speed}ms </label>
         <input id="speed" value={speed} onInput={onSpeedChange} style={{verticalAlign: 'middle'}} type="range" min="10" max="1000"/>
