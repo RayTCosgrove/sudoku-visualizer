@@ -47,7 +47,7 @@ const App = () => {
     ]);
     pastTables = [];
     currentTable = 0;
-
+    setId(0);
     table = [
       [0, 0, 0, 2, 4, 5, 6, 0, 7],
       [0, 0, 0, 0, 0, 0, 0, 2, 0],
@@ -142,13 +142,14 @@ const App = () => {
   const onSolve = () => {
     if(!id){
     solveSudoku();
-     setId( setInterval(() => {
+     let intervalId = setInterval(() => {
       setSudoku(pastTables[currentTable]);
       currentTable += 1;
       if (currentTable === pastTables.length) {
-        clearInterval(id);
+        clearInterval(intervalId);
       }
-    }, speed));
+    }, speed);
+    setId(intervalId);
   }
   };
 
@@ -187,7 +188,7 @@ const App = () => {
         <button onClick={onStop}>Stop!</button>
         <button onClick={reset}>Reset!</button>
         <label htmlFor="speed">Speed: {speed}ms </label>
-        <input id="speed" value={speed} onInput={onSpeedChange} style={{verticalAlign: 'middle'}} type="range" min="10" max="1000"/>
+        <input id="speed" value={speed} onChange={onSpeedChange} style={{verticalAlign: 'middle'}} type="range" min="10" max="1000"/>
         
       </div>
     </div>
